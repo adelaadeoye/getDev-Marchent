@@ -2,28 +2,28 @@
 const router = require("express").Router();
 
 //Model for database
-const db = require("../schema/listings-router-model");
+const db = require("../schema/product-router-model");
 
 //Validation
 const validation = require("../middleware/validation");
 
-//Get all listings
+//Get all products
 router.get("/", (req, res) => {
-  db.findAllListing()
-    .then(listings => {
-      res.status(200).json(listings);
+  db.findAllProduct()
+    .then(products => {
+      res.status(200).json(products);
     })
     .catch(error => {
       res.status(500).json({ message: "Unable to connect to server" });
     });
 });
 
-//Get  listings added by user
+//Get  product added by Merchant
 router.get("/:id", (req, res) => { 
   const id= req.params.id;
-  db.findByUser(id)
-    .then(listings => {
-      res.status(200).json(listings);
+  db.findByMerchant(id)
+    .then(products => {
+      res.status(200).json(products);
     })
     .catch(error => {
       res.status(500).json({ message: "Unable to connect to server" });
@@ -32,17 +32,18 @@ router.get("/:id", (req, res) => {
 
 
 //Add new listings
-router.post("/:id", validation.validateListingEntry, (req, res) => {
-  let list = req.body;
-  const user_id = req.params.id;
-  const listings = {
-    ...list,
-    user_id
+// router.post("/:id", validation.validateListingEntry, (req, res) => {
+  router.post("/:id",  (req, res) => {
+  let prod = req.body;
+  const merch_id = req.params.id;
+  const products = {
+    ...prod,
+    merch_id
   };
-  console.log(listings);
-  db.addListing(listings)
+  console.log(products);
+  db.addProduct(products)
     .then(data => {
-      res.status(201).json({ message: "Listing added successfully", data });
+      res.status(201).json({ message: "Product added successfully", data });
     })
     .catch(error => {
       res
@@ -53,23 +54,24 @@ router.post("/:id", validation.validateListingEntry, (req, res) => {
     });
 });
 
-// Update Account
+// Update product
 
-router.put("/:id", validation.validateListingEntry, (req, res) => {
+// router.put("/:id", validation.validateListingEntry, (req, res) => {
+  router.put("/:id",  (req, res) => {
   const id = req.params.id;
   let data = req.body;
  
-  db.findById(id).then(listing => {
-    if (listing) {
-      db.updateListing(id, data)
+  db.findById(id).then(product => {
+    if (product) {
+      db.updateProduct(id, data)
         .then(updated => {
           res
             .status(202)
-            .json({ message: "Listing updated successfully", updated });
+            .json({ message: "Product updated successfully", updated });
         })
         .catch(error => {
           res.send({
-            message: "Unable to update info Listing does not exist"
+            message: "Unable to update product, product does not exist"
           });
         });
     } else {
@@ -77,17 +79,17 @@ router.put("/:id", validation.validateListingEntry, (req, res) => {
     }
   });
 });
-//Delete Listings
+//Delete product
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
-  db.removeListing(id)
-    .then(listing => {
-      if (listing) {
+  db.removeProduct(id)
+    .then(product => {
+      if (product) {
         res
           .status(200)
-          .json({ message: "Listing Deleted Successfully", listing });
+          .json({ message: "Product Deleted Successfully", product });
       } else {
-        res.status(404).json({ message: "Listing not found" });
+        res.status(404).json({ message: "Product not found" });
       }
     })
     .catch(error => {

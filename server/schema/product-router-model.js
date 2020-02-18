@@ -6,7 +6,7 @@ module.exports = {
   updateProduct,
   findAllProduct,
   findById,
-  findByUser
+  findByMerchant
   //   findByReg
 };
 async function findAllProduct() {
@@ -25,9 +25,9 @@ function findById(id) {
     .first();
 }
 
-function findByUser(id) {
+function findByMerchant(id) {
   return db("product")
-    .where("merchant", "=", id);
+    .where("merch_id", "=", id);
     
 }
 

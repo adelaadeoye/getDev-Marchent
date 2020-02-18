@@ -6,7 +6,7 @@ const helmet = require("helmet");
 //Self declared exports
 const authenticate = require("../middleware/authenticate.js");
 const merchAuthRouter = require("../auth/merch-auth-router.js");
-const listingsRouter = require("../listings/listings-router.js");
+const productRouter = require("../products/product-router");
 
 //Declaration
 const server = express();
@@ -18,7 +18,7 @@ server.use(express.json()); // Node frame work to give back json format as promi
 
 //Route to different endpoints
 server.use("/api/merchAuth", merchAuthRouter);
-server.use("/api/listings", authenticate, listingsRouter); 
+server.use("/api/products", authenticate, productRouter); 
 
 server.get('/', (req,res)=>{
     res.send(`<h1>"Hello You!, Checkout out the readMe on how to access different endpoints Cheers"</h1>`)
