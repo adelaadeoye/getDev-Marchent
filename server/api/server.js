@@ -5,7 +5,7 @@ const helmet = require("helmet");
 
 //Self declared exports
 const authenticate = require("../middleware/authenticate.js");
-const authRouter = require("../auth/auth-router.js");
+const merchAuthRouter = require("../auth/merch-auth-router.js");
 const listingsRouter = require("../listings/listings-router.js");
 
 //Declaration
@@ -17,7 +17,7 @@ server.use(cors()); // Help in securing request from different origin most espec
 server.use(express.json()); // Node frame work to give back json format as promise
 
 //Route to different endpoints
-server.use("/api/auth", authRouter);
+server.use("/api/merchAuth", merchAuthRouter);
 server.use("/api/listings", authenticate, listingsRouter); 
 
 server.get('/', (req,res)=>{

@@ -4,7 +4,8 @@ exports.up = function(knex) {
 
     tbl
       .varchar("merch_name", 255)
-      .notNullable();
+      .notNullable()
+      .unique();
 
     tbl
       .varchar("merch_store_name", 255)
