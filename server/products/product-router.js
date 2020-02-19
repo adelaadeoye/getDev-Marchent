@@ -32,41 +32,53 @@ router.get("/:id", (req, res) => {
 
 
 //Add new listings
-// router.post("/:id", validation.validateListingEntry, (req, res) => {
-  router.post("/:id",  (req, res) => {
+  router.post("/:id", validation.productAdd_Update, (req, res) => {
   let prod = req.body;
   const merch_id = req.params.id;
   const products = {
     ...prod,
     merch_id
   };
-  console.log(products);
+if(merch_id !=req.token.id){
+  res.status(400).json({message:"You are not the authorized store owner"})
+}
+else{
   db.addProduct(products)
-    .then(data => {
-      res.status(201).json({ message: "Product added successfully", data });
-    })
-    .catch(error => {
-      res
-        .status(500)
-        .json({
-          message: "Failed to add listing Possible reason user not found"
-        });
-    });
+  .then(data => {
+    console.log("i am the data",req.token)
+    res.status(201).json({ message: "Product added successfully", data });
+  })
+  .catch(error => {
+    res
+      .status(500)
+      .json({
+        message: "Failed to add Product, Possible reason user not found"
+      });
+  });
+}
+
+  
 });
 
 // Update product
 
-// router.put("/:id", validation.validateListingEntry, (req, res) => {
-  router.put("/:id",  (req, res) => {
+  router.put("/:id", validation.productAdd_Update, (req, res) => {
   const id = req.params.id;
   let data = req.body;
  
   db.findById(id).then(product => {
     if (product) {
-      db.updateProduct(id, data)
+      if(product.merch_id != req.token.id){
+        res.status(400).json({message:"You are not the authorized product owner"})
+
+      }
+      else{
+
+        console.log("I am product", product)
+        db.updateProduct(id, data)
         .then(updated => {
           res
-            .status(202)
+          .status(202)
             .json({ message: "Product updated successfully", updated });
         })
         .catch(error => {
@@ -74,6 +86,7 @@ router.get("/:id", (req, res) => {
             message: "Unable to update product, product does not exist"
           });
         });
+      }
     } else {
       res.status(404).json({ message: "Not found" });
     }
@@ -82,19 +95,33 @@ router.get("/:id", (req, res) => {
 //Delete product
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
-  db.removeProduct(id)
-    .then(product => {
-      if (product) {
-        res
-          .status(200)
-          .json({ message: "Product Deleted Successfully", product });
-      } else {
-        res.status(404).json({ message: "Product not found" });
+
+  db.findById(id).then(product => {
+    if (product) {
+      if(product.merch_id != req.token.id){
+        res.status(400).json({message:"You are not the authorized product owner"})
+
       }
-    })
-    .catch(error => {
-      res.status(500).json({ message: "Unable to connect to server" });
-    });
+      else{
+        db.removeProduct(id)
+        .then(product => {
+          if (product) {
+            res
+              .status(200)
+              .json({ message: "Product Deleted Successfully", product });
+          } else {
+            res.status(404).json({ message: "Product not found" });
+          }
+        })
+        .catch(error => {
+          res.status(500).json({ message: "Unable to connect to server" });
+        });
+      }
+    } else {
+      res.status(404).json({ message: "Not found" });
+    }})
+  
+  
 });
 
 module.exports = router;

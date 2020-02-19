@@ -2,7 +2,7 @@
 module.exports = {
   merchLogin,
   merchReg,
-  validateListingEntry,
+  productAdd_Update,
 };
 function merchLogin(req, res, next) {
   let { merch_email, merch_password } = req.body;
@@ -22,10 +22,10 @@ function merchReg(req, res, next) {
     }
   }
 
-  function validateListingEntry(req, res, next) {
-    let {bath_num, bed_num,zip,address,city,street,price,sq_ft,email} = req.body;
+  function productAdd_Update(req, res, next) {
+    let {prod_name, prod_type,prod_image_url,prod_price} = req.body;
     let id=req.params.id
-    if (!bath_num || !bed_num ||!zip||!address||!city||!street||!price||!sq_ft||!email||!id) {
+    if (!prod_name || !prod_type ||!prod_image_url||!prod_price) {
       res.status(404).json({ message: "All entries are required" });
     } else {
       next();

@@ -4,7 +4,6 @@ module.exports={
     signToken
 }
 function signToken(user) {
-  console.log("i am user",user)
     const payload = {
       id:user.id,
       merch_email: user.merch_email
