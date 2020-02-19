@@ -72,7 +72,7 @@ router.delete("/:id", authenticate, (req, res) => {
     if (user) {
       if (user.id != req.token.id) {
         res.status(400).json({
-          message: "You are not the authorized to update this account"
+          message: "You are not the authorized to delete this account"
         });
       } else {
         db.remove(id)

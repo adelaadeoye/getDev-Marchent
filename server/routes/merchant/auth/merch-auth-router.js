@@ -41,7 +41,7 @@ router.get("/:id", (req, res) => {
     });
 });
 //Register new merchant
-  router.post("/register",validation.merchReg, (req, res) => {
+router.post("/register", validation.merchReg, (req, res) => {
   let merchant = req.body;
   const pass = bcrypt.hash(merchant.merch_password);
   merchant.merch_password = pass;
@@ -65,44 +65,62 @@ router.get("/:id", (req, res) => {
 });
 
 //Delete Account
-router.delete("/:id",authenticate,(req, res) => {
+router.delete("/:id", authenticate, (req, res) => {
   const id = req.params.id;
-  db.remove(id)
-    .then(user => {
-      if (user) {
-        res.status(200).json({ message: "Account Deleted Successfully", user });
+  db.findById(id).then(user => {
+    if (user) {
+      if (user.id != req.token.id) {
+        res.status(400).json({
+          message: "You are not the authorized to delete this account"
+        });
       } else {
-        res.status(404).json({ message: "Account not found" });
+        db.remove(id)
+          .then(user => {
+            if (user) {
+              res
+                .status(200)
+                .json({ message: "Account Deleted Successfully", user });
+            } else {
+              res.status(404).json({ message: "Account not found" });
+            }
+          })
+          .catch(error => {
+            res.status(500).json({ message: "Unable to connect to server" });
+          });
       }
-    })
-    .catch(error => {
-      res.status(500).json({ message: "Unable to connect to server" });
-    });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  });
 });
 
 // Update Account
 
-  router.put("/:id", validation.merchReg, authenticate,(req, res) => {
-
+router.put("/:id", validation.merchReg, authenticate, (req, res) => {
   const id = req.params.id;
   let data = req.body;
-  console.log(data)
+  console.log(data);
   const pass = bcrypt.hash(data.merch_password);
-data.merch_password=pass;
+  data.merch_password = pass;
   db.findById(id).then(user => {
     if (user) {
-      
-      db.update(id, data)
-        .then(updated => {
-          res
-            .status(202)
-            .json({ message: "Account updated successfully", updated });
-        })
-        .catch(error => {
-          res.send({
-            message: "Unable to update info, Merchant  or email exist"
-          });
+      if (user.id != req.token.id) {
+        res.status(400).json({
+          message: "You are not the authorized to update this account"
         });
+      } else {
+        db.update(id, data)
+          .then(updated => {
+            res
+              .status(202)
+              .json({ message: "Account updated successfully", updated });
+          })
+          .catch(error => {
+            res.send({
+              message: "Unable to update info, Merchant  or email exist"
+            });
+          });
+      }
     } else {
       res.status(404).json({ message: "User not found" });
     }
@@ -110,12 +128,12 @@ data.merch_password=pass;
 });
 
 //Login
-  router.post("/login", validation.merchLogin, (req, res) => {
-  let {merch_email, merch_password } = req.body;
+router.post("/login", validation.merchLogin, (req, res) => {
+  let { merch_email, merch_password } = req.body;
 
   db.findBy({ merch_email })
     .then(user => {
-      console.log(user)
+      console.log(user);
       if (!user) {
         res.status(401).json({ message: "Invalid Credentials." });
       } else {
