@@ -17,7 +17,7 @@ exports.up = function(knex) {
       .notNullable()
       .references("id")
       .inTable("merchant")
-      .onDelete("CASCADE") // CASCADE, RESTRICT, DO NOTHING, SET NULL,
+      .onDelete("RESTRICT") // CASCADE, RESTRICT, DO NOTHING, SET NULL,
       .onUpdate("CASCADE");
 
     tbl
@@ -26,7 +26,7 @@ exports.up = function(knex) {
       .notNullable()
       .references("id")
       .inTable("product")
-      .onDelete("CASCADE") // CASCADE, RESTRICT, DO NOTHING, SET NULL,
+      .onDelete("RESTRICT") // CASCADE, RESTRICT, DO NOTHING, SET NULL,
       .onUpdate("CASCADE");
 
     tbl
@@ -35,7 +35,7 @@ exports.up = function(knex) {
       .notNullable()
       .references("id")
       .inTable("customer")
-      .onDelete("CASCADE") // CASCADE, RESTRICT, DO NOTHING, SET NULL,
+      .onDelete("RESTRICT") // CASCADE, RESTRICT, DO NOTHING, SET NULL,
       .onUpdate("CASCADE");
   });
 

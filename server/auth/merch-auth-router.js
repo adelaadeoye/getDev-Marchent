@@ -1,3 +1,5 @@
+const authenticate = require("../middleware/authenticate");
+
 //Dependencies
 const router = require("express").Router();
 
@@ -38,20 +40,19 @@ router.get("/:id", (req, res) => {
       res.status(500).json({ message: "Unable to connect to server" });
     });
 });
-//Register new user
-// router.post("/register", validation.validateRegEntry, (req, res) => {
-  router.post("/register", (req, res) => {
+//Register new merchant
+  router.post("/register",validation.merchReg, (req, res) => {
   let merchant = req.body;
-  const pass = bcrypt.hash(merchant.password);
-  merchant.password = pass;
+  const pass = bcrypt.hash(merchant.merch_password);
+  merchant.merch_password = pass;
 
-  db.addMerch(user)
+  db.addMerch(merchant)
     .then(data => {
       res.status(201).json({ message: "Account Created Successfully", data });
     })
     .catch(error => {
-      const { merch_name, email } = req.body;
-      db.findByReg(merch_name, email)
+      const { merch_name, merch_email } = req.body;
+      db.findByReg(merch_name, merch_email)
         .then(user => {
           if (user) {
             res.status(404).json({ message: "Merchant name or email exist" });
@@ -64,7 +65,7 @@ router.get("/:id", (req, res) => {
 });
 
 //Delete Account
-router.delete("/:id", (req, res) => {
+router.delete("/:id",authenticate,(req, res) => {
   const id = req.params.id;
   db.remove(id)
     .then(user => {
@@ -81,13 +82,13 @@ router.delete("/:id", (req, res) => {
 
 // Update Account
 
-// router.put("/:id",validation.validateRegEntry, (req, res) => {
-  router.put("/:id", (req, res) => {
+  router.put("/:id", validation.merchReg, authenticate,(req, res) => {
 
   const id = req.params.id;
   let data = req.body;
-  const pass = bcrypt.hash(data.password);
-data.password=pass;
+  console.log(data)
+  const pass = bcrypt.hash(data.merch_password);
+data.merch_password=pass;
   db.findById(id).then(user => {
     if (user) {
       
@@ -109,16 +110,16 @@ data.password=pass;
 });
 
 //Login
-// router.post("/login", validation.validateInput, (req, res) => {
-  router.post("/login",  (req, res) => {
-  let { email, password } = req.body;
+  router.post("/login", validation.merchLogin, (req, res) => {
+  let {merch_email, merch_password } = req.body;
 
-  db.findBy({ email })
+  db.findBy({ merch_email })
     .then(user => {
+      console.log(user)
       if (!user) {
         res.status(401).json({ message: "Invalid Credentials." });
       } else {
-        if (bcrypt.unHash(email, password, user.password)) {
+        if (bcrypt.unHash(merch_email, merch_password, user.merch_password)) {
           const token = jwt.signToken(user);
 
           res.status(200).json({

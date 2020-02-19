@@ -41,17 +41,17 @@ function findById(id) {
     .first();
 }
 async function findAll() {
-  let allMerchants = await db("merchant").select("id", "username", "email");
+  let allMerchants = await db("merchant").select("*");
   return allMerchants;
 }
 
-async function findByReg(merch_name,email) {
-  let result = await db("merchant").where('merch_name',merch_name).orWhere('email',email).first();
+async function findByReg(merch_name,merch_email) {
+  let result = await db("merchant").where('merch_name',merch_name).orWhere('merch_email',merch_email).first();
   return result? true:false
 }
 
-async function findBy(email) {
-  let result = await db("merchant").where(email).first();
+async function findBy(data) {
+  let result = await db("merchant").where(data).first();
   console.log(result)
   return result;
 }

@@ -4,8 +4,10 @@ module.exports={
     signToken
 }
 function signToken(user) {
+  console.log("i am user",user)
     const payload = {
-      username: user.username
+      id:user.id,
+      merch_email: user.merch_email
     };
     const secret = process.env.JWT_SECRET || "keep me secret";
     const options = {
