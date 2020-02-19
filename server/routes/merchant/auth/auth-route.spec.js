@@ -1,8 +1,9 @@
 const request = require("supertest");
 
-const server = require("../api/server");
+const server = require("../../../api/server");
 
-const db = require("../database/dbConfig");
+const db = require("../../../database/dbConfig");
+const db = require("../../../database/dbConfig");
 
 //Here i want to test the auth endpoint
 beforeEach(() => db("users").truncate());
@@ -20,9 +21,7 @@ describe("/api/auth", () => {
         .send({ username, password, email })
         .expect(404);
     });
-    // const username = "test";
-    // const password = "test";
-    // const email = "test";
+   
     it("should return json", () => {
       return request(server)
         .post("/api/auth/register")

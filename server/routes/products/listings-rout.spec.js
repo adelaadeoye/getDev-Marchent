@@ -1,7 +1,7 @@
 
 const request = require("supertest");
 
-const server = require("../api/server.js");
+const server = require("../../api/server.js");
 
 
 describe('/api/listings', () => {

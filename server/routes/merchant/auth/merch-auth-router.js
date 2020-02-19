@@ -1,17 +1,17 @@
-const authenticate = require("../middleware/authenticate");
+const authenticate = require("../../../middleware/authenticate");
 
 //Dependencies
 const router = require("express").Router();
 
 //Model for database
-const db = require("../schema/merch-auth-router-model.js");
+const db = require("../../../schema/merch-auth-router-model");
 
 //Validation
-const validation = require("../middleware/validation");
+const validation = require("../../../middleware/validation");
 //Hash
-const bcrypt = require("../utils/bcryptHash.js");
+const bcrypt = require("../../../utils/bcryptHash.js");
 //Token
-const jwt = require("../utils/jsonTokens");
+const jwt = require("../../../utils/jsonTokens");
 
 //Get all users
 router.get("/", (req, res) => {

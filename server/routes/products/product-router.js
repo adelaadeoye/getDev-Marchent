@@ -2,10 +2,10 @@
 const router = require("express").Router();
 
 //Model for database
-const db = require("../schema/product-router-model");
+const db = require("../../schema/product-router-model");
 
 //Validation
-const validation = require("../middleware/validation");
+const validation = require("../../middleware/validation");
 
 //Get all products
 router.get("/", (req, res) => {
