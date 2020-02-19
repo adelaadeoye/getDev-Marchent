@@ -31,7 +31,6 @@ async function update(id, changes) {
     .update(changes);
 
   const updated = await findById(id);
-  console.log(updated);
   return updated;
 }
 

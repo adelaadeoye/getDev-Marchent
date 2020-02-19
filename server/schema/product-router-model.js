@@ -7,7 +7,6 @@ module.exports = {
   findAllProduct,
   findById,
   findByMerchant
-  //   findByReg
 };
 async function findAllProduct() {
   let product = await db("product");

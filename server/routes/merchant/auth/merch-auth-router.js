@@ -13,33 +13,38 @@ const bcrypt = require("../../../utils/bcryptHash.js");
 //Token
 const jwt = require("../../../utils/jsonTokens");
 
-//Get all users
-router.get("/", (req, res) => {
-  db.findAll()
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(error => {
-      res.status(500).json({ message: "Unable to connect to server" });
-    });
-});
+//TODO this endpoint should not be enable
+// //Get all users
+// router.get("/", (req, res) => {
+//   db.findAll()
+//     .then(users => {
+//       res.status(200).json(users);
+//     })
+//     .catch(error => {
+//       res.status(500).json({ message: "Unable to connect to server" });
+//     });
+// });
 
+
+//TODO this endpoint should not be enable
 //findById ===> get a user by its ID
 
-router.get("/:id", (req, res) => {
-  const id = req.params.id;
-  db.findById(id)
-    .then(user => {
-      if (user) {
-        res.status(200).json(user);
-      } else {
-        res.status(404).json({ message: "User not found" });
-      }
-    })
-    .catch(error => {
-      res.status(500).json({ message: "Unable to connect to server" });
-    });
-});
+// router.get("/:id", (req, res) => {
+//   const id = req.params.id;
+//   db.findById(id)
+//     .then(user => {
+//       if (user) {
+//         res.status(200).json(user);
+//       } else {
+//         res.status(404).json({ message: "User not found" });
+//       }
+//     })
+//     .catch(error => {
+//       res.status(500).json({ message: "Unable to connect to server" });
+//     });
+// });
+
+
 //Register new merchant
 router.post("/register", validation.merchReg, (req, res) => {
   let merchant = req.body;
