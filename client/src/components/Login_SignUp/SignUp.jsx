@@ -9,7 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import axios from "axios"
+import { connect } from "react-redux";
+import { registerUser } from "../../redux/actions/SignUpActions";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2)
   }
 }));
-export default function SignUp(props) {
+export const SignUp=props=> {
   const classes = useStyles();
   const initials={
     merch_name:"",
@@ -43,23 +44,24 @@ export default function SignUp(props) {
     merch_email:"",
     merch_password:""
   })
+ 
   const handleChanges=e=>{
     e.preventDefault();
     setValues({...values,[e.target.name]:e.target.value})
   }
+
+const input ={
+	"merch_name":"adedsdsla",
+	"merch_store_name":"adsdde",
+	"merch_email":"ade@ade.com",
+	"merch_password":"11dsd2c"
+	
+}
   const submit=(e)=>{
     e.preventDefault();
     console.log(values)
-    axios.post("localhost:6000/api/merchAuth/register",{values})
-    .then(response=>{
-      
-      console.log(response)
-  
-    })
-    .catch(error=>{
-console.log(error)
-
-    })
+    props.registerUser(values,props.history,"merchant")
+    
   }
   return (
     <div>
@@ -120,7 +122,7 @@ console.log(error)
                 fullWidth
                 name="merch_password"
                 label="Password"
-                type="merch_password"
+                type="password"
                 autoComplete="current-password"
                 value={values.merch_password}
                 onChange={handleChanges}
@@ -146,3 +148,11 @@ console.log(error)
     </div>
   );
 }
+function mapStateToProps(state) {
+  return {
+    isFetching: state.signUpReducer.isFetching,
+    error: state.signUpReducer.error
+  };
+}
+
+export default connect(mapStateToProps, { registerUser })(SignUp);

@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MerchantHome(props) {
+export default function DashBoard() {
   const classes = useStyles();
   const [signUp, setSignUp] = React.useState(false);
   const [signIn, setSignIn] = React.useState(false);
@@ -84,17 +84,10 @@ store          </Typography>
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6">
-              We help you get to over 10 millions of customers who wants your products<br/>
-              Signup today and start making more money 
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-
-            <img src={store} className={classes.image}/>
+            
           </Grid>
         </Grid>
-        <SignIn handleClose={handleClose} open={signIn} history={props.history}/>
+        <SignIn handleClose={handleClose} open={signIn}/>
         <SignUp handleClose={handleClose} open={signUp}/>
       </Container>
     </div>

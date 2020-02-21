@@ -8,8 +8,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-
+import axios from "axios"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { connect } from "react-redux";
+import {loginUser } from "../../redux/actions/SignInActions";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,13 +33,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function SignIn(props) {
+export const SignIn=props=> {
   const classes = useStyles();
   const initials={
     merch_email:"",
     merch_password:""
   }
-const [values,setValues] =useState({initials})
+  const [values,setValues] =useState({
+    merch_email:"",
+    merch_password:""
+  })
+ 
+  const handleChanges=e=>{
+    e.preventDefault();
+    setValues({...values,[e.target.name]:e.target.value})
+  }
+
+
+  const submit=(e)=>{
+    
+    e.preventDefault();
+    console.log(values)
+    props.loginUser(values,props.history,"merchant")
+    setValues(initials)
+    props.handleClose()
+
+    }
   return (
     <div>
       <Dialog
@@ -59,9 +80,12 @@ const [values,setValues] =useState({initials})
                 margin="normal"
                 required
                 fullWidth
+                type="email"
                 label="Email Address"
                 name="merch_email"
                 autoComplete="email"
+                value={values.merch_email}
+                onChange={handleChanges}
                 autoFocus
               />
               <TextField
@@ -71,8 +95,10 @@ const [values,setValues] =useState({initials})
                 fullWidth
                 name="merch_password"
                 label="Password"
-                type="merch_password"
+                type="password"
                 autoComplete="current-password"
+                value={values.merch_password}
+                onChange={handleChanges}
               />
 
               <Grid container></Grid>
@@ -86,7 +112,7 @@ const [values,setValues] =useState({initials})
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={props.handleClose}
+            onClick={submit}
           >
             Sign In
           </Button>
@@ -95,3 +121,11 @@ const [values,setValues] =useState({initials})
     </div>
   );
 }
+function mapStateToProps(state) {
+  return {
+    isFetching: state.signInReducer.isFetching,
+    error: state.signInReducer.error
+  };
+}
+
+export default connect(mapStateToProps, { loginUser })(SignIn);

@@ -13,17 +13,17 @@ const bcrypt = require("../../../utils/bcryptHash.js");
 //Token
 const jwt = require("../../../utils/jsonTokens");
 
-//TODO this endpoint should not be enable
-// //Get all users
-// router.get("/", (req, res) => {
-//   db.findAll()
-//     .then(users => {
-//       res.status(200).json(users);
-//     })
-//     .catch(error => {
-//       res.status(500).json({ message: "Unable to connect to server" });
-//     });
-// });
+// TODO this endpoint should not be enable
+//Get all users
+router.get("/", (req, res) => {
+  db.findAll()
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Unable to connect to server" });
+    });
+});
 
 
 //TODO this endpoint should not be enable
@@ -144,9 +144,9 @@ router.post("/login", validation.merchLogin, (req, res) => {
       } else {
         if (bcrypt.unHash(merch_email, merch_password, user.merch_password)) {
           const token = jwt.signToken(user);
-
           res.status(200).json({
             message: `Welcome ${user.merch_name}!`,
+            userID:`${user.id}`,
             token
           });
         } else {

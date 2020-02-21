@@ -3,6 +3,7 @@ import './App.css';
 import AppProduct from "./components/merchant/AddProduct"
 import { Switch, Route } from 'react-router-dom';
 import MerchantHome from './components/merchant/MerchantHome';
+import DashBoard from './components/merchant/DashBoard';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
 
       <Route path="/addProduct" component={ AppProduct}/>
       <Route path="/merchant" component={MerchantHome}/>
+      <Route path="/dashBoard" component={DashBoard}/>
       </Switch>
     </div>
   );

@@ -8,8 +8,10 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
+import { reducer as signUpReducer } from "./redux/reducers/SignUpReducer";
+import { reducer as signInReducer } from "./redux/reducers/SignInReducer";
 
-const store = createStore(combineReducers({}), applyMiddleware(thunk, logger));
+const store = createStore(combineReducers({signUpReducer,signInReducer}), applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   <Provider store={store}>
