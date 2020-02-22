@@ -22,7 +22,8 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                error: null
+                error: null,
+                data:action.payload.data.message
             }
         default:
             return state;
@@ -32,4 +33,5 @@ export const reducer = (state = initialState, action) => {
 const initialState = {
     error:null,
     isFetching:false,
+    data:""
 };

@@ -9,9 +9,10 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import store from "../../image/store.jpg"
 import SignIn from "../Login_SignUp/SignIn"
-import SignUp from "../Login_SignUp/SignUp"
+import CustomerSignUp from "./CustomerSignUp"
 import IconButton from '@material-ui/core/IconButton';
 import Logo from "../../image/logo.png"
+import Product from "../merchant/Products"
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MerchantHome(props) {
+export default function Home(props) {
   const classes = useStyles();
   const [signUp, setSignUp] = React.useState(false);
   const [signIn, setSignIn] = React.useState(false);
@@ -66,36 +67,21 @@ export default function MerchantHome(props) {
         <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <img src={Logo}/>
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-        
-store          </Typography>
+         
           <Button color="inherit"onClick= {()=>handleClickOpen("signIn")}>SignIn</Button>
           <Button color="inherit" onClick= {()=>handleClickOpen("signUp")}>SignUp</Button>
-          <Button color="inherit">Visit store</Button>
+          <Button color="inherit">Be a Merchant </Button>
         </Toolbar>
       </AppBar>
       <br/>
       <CssBaseline />
       <Container maxWidth="lg">
         <Grid container spacing={2} justify="center" className={classes.paper}>
-          <Grid item xs={12}>
-            <Typography variant="h4">
-              Welcome to Get Dev Online Store
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h6">
-              We help you get to over 10 millions of customers who wants your products<br/>
-              Signup today and start making more money 
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-
-            <img src={store} className={classes.image}/>
-          </Grid>
+            
         </Grid>
-        <SignIn handleClose={handleClose} open={signIn} userType={"merchant"}/>
-        <SignUp handleClose={handleClose} open={signUp}/>
+        <SignIn handleClose={handleClose} open={signIn} userType={"customer"}/>
+        <CustomerSignUp handleClose={handleClose} open={signUp} props={props}/>
+        <Product/>
       </Container>
     </div>
   );

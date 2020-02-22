@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React,{useState} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,10 +8,9 @@ import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import axios from "axios"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { connect } from "react-redux";
-import {loginUser } from "../../redux/actions/SignInActions";
+import { registerUser } from "../../redux/actions/SignUpActions";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,34 +30,35 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2)
   }
 }));
-
-
-export const SignIn=props=> {
+export const CustomerSignUp=props=> {
+  console.log(props)
   const classes = useStyles();
   const initials={
-    merch_email:"",
-    merch_password:""
+   
+    cust_name:"",
+    cust_email:"",
+    cust_password:""
   }
   const [values,setValues] =useState({
-    merch_email:"",
-    merch_password:""
+   
+    cust_name:"",
+    cust_email:"",
+    cust_password:""
   })
  
   const handleChanges=e=>{
     e.preventDefault();
     setValues({...values,[e.target.name]:e.target.value})
   }
-console.log(" I ma cus",props)
+
 
   const submit=(e)=>{
-    
     e.preventDefault();
     console.log(values)
-    props.loginUser(values,props.history,props.userType)
-    setValues(initials)
+    props.registerUser(values,props.history,"customer")
     props.handleClose()
 
-    }
+  }
   return (
     <div>
       <Dialog
@@ -71,33 +71,42 @@ console.log(" I ma cus",props)
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
+         
             <form className={classes.form} noValidate>
+            
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                type="email"
-                label="Email Address"
-                name="merch_email"
-                autoComplete="email"
-                value={values.merch_email}
+                type="text"
+                label="Full Name"
+                name="cust_name"
+                autoComplete="name"
+                value={values.cust_name}
                 onChange={handleChanges}
-                autoFocus
-              />
+              /><TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              type="email"
+              label="Email Address"
+              name="cust_email"
+              autoComplete="email"
+              value={values.cust_email}
+              onChange={handleChanges}
+            />
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="merch_password"
+                name="cust_password"
                 label="Password"
                 type="password"
                 autoComplete="current-password"
-                value={values.merch_password}
+                value={values.cust_password}
                 onChange={handleChanges}
               />
 
@@ -114,7 +123,7 @@ console.log(" I ma cus",props)
             className={classes.submit}
             onClick={submit}
           >
-            Sign In
+            Sign Up
           </Button>
         </DialogActions>
       </Dialog>
@@ -123,9 +132,9 @@ console.log(" I ma cus",props)
 }
 function mapStateToProps(state) {
   return {
-    isFetching: state.signInReducer.isFetching,
-    error: state.signInReducer.error
+    isFetching: state.signUpReducer.isFetching,
+    error: state.signUpReducer.error
   };
 }
 
-export default connect(mapStateToProps, { loginUser })(SignIn);
+export default connect(mapStateToProps, { registerUser })(CustomerSignUp);

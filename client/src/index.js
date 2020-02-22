@@ -10,8 +10,9 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { reducer as signUpReducer } from "./redux/reducers/SignUpReducer";
 import { reducer as signInReducer } from "./redux/reducers/SignInReducer";
+import { reducer as addProductReducer } from "./redux/reducers/AddProductReducer";
 
-const store = createStore(combineReducers({signUpReducer,signInReducer}), applyMiddleware(thunk, logger));
+const store = createStore(combineReducers({signUpReducer,signInReducer,addProductReducer}), applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   <Provider store={store}>

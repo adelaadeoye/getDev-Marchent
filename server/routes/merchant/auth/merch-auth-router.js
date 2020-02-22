@@ -145,7 +145,7 @@ router.post("/login", validation.merchLogin, (req, res) => {
         if (bcrypt.unHash(merch_email, merch_password, user.merch_password)) {
           const token = jwt.signToken(user);
           res.status(200).json({
-            message: `Welcome ${user.merch_name}!`,
+            message: `Welcome ${user.merch_store_name}!`,
             userID:`${user.id}`,
             token
           });

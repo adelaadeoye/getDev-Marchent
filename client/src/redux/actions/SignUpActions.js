@@ -34,6 +34,7 @@ export function registerUser(values, history, userType) {
   } else {
     return function(dispatch) {
       dispatch(registerUserLoading());
+      console.log(history)
       return axios
         .post(
             "http://localhost:4000/api/custAuth/register", values
@@ -41,7 +42,6 @@ export function registerUser(values, history, userType) {
         .then(response => {
           dispatch(registerUserSuccess(response));
           //TODO push to customer login page or push to customer dashboard
-          // history.push("/login");
         })
         .catch(error => {
           dispatch(registerUserFailure(error.response));
